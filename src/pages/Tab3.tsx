@@ -1,31 +1,60 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  useIonViewDidEnter
+} from '@ionic/react';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
+import { useState } from 'react';
 import './Tab3.css';
 
+import { fetchUserInfo } from '../services/GithubService';
+import { Userinfo } from '../interfaces/Userinfo';
+
 const Tab3: React.FC = () => {
+
+  const [userInfo, setUserInfo] = useState<Userinfo | null>(null);
+
+  const loadUserInfo = async () => {
+    const info = await fetchUserInfo();
+    setUserInfo(info);
+  };
+
+  useIonViewDidEnter(() => {
+    loadUserInfo();
+  });
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Perfil del ususario</IonTitle>
+          <IonTitle>Perfil del usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Perfil</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonCard>
-      <img alt="Ariel Munoz" src="https://desdelaventana.com.ar/zixpanel/cache/med-fecha_2022-06-18_hora_08-28hs_nro-random_840.jpg" />
-      <IonCardHeader>
-        <IonCardTitle>Ariel Muñoz</IonCardTitle> 
-        <IonCardSubtitle>ArielMunoz50</IonCardSubtitle>
-      </IonCardHeader>
 
-      <IonCardContent>Estudiante de informática UISEK</IonCardContent>
-    </IonCard>
+      <IonContent fullscreen>
+        <IonCard>
+          {userInfo && (
+            <>
+              <img
+                src={userInfo.avatar_url}
+                alt={userInfo.name}
+                style={{ width: '120px', borderRadius: '50%', margin: '16px auto', display: 'block' }}
+              />
+
+              <IonCardHeader>
+                <IonCardTitle>{userInfo.name}</IonCardTitle>
+                <IonCardSubtitle>@{userInfo.login}</IonCardSubtitle>
+              </IonCardHeader>
+
+              <IonCardContent>
+                {userInfo.bio}
+              </IonCardContent>
+            </>
+          )}
+        </IonCard>
       </IonContent>
     </IonPage>
   );
