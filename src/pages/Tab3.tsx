@@ -1,21 +1,33 @@
 import {
+  IonButton,
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
   useIonViewDidEnter
 } from '@ionic/react';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle
+} from '@ionic/react';
 import { useState } from 'react';
 import './Tab3.css';
 
 import { fetchUserInfo } from '../services/GithubService';
 import { Userinfo } from '../interfaces/Userinfo';
+import AuthServices from '../services/AuthServices';
+import { useHistory } from 'react-router-dom';
+import { logOutOutline } from 'ionicons/icons';
 
 const Tab3: React.FC = () => {
 
   const [userInfo, setUserInfo] = useState<Userinfo | null>(null);
+  const history = useHistory();
 
   const loadUserInfo = async () => {
     const info = await fetchUserInfo();
@@ -25,6 +37,11 @@ const Tab3: React.FC = () => {
   useIonViewDidEnter(() => {
     loadUserInfo();
   });
+
+  const handleLogout = () => {
+    AuthServices.logout();
+    history.push('/login');
+  };
 
   return (
     <IonPage>
@@ -41,7 +58,12 @@ const Tab3: React.FC = () => {
               <img
                 src={userInfo.avatar_url}
                 alt={userInfo.name}
-                style={{ width: '120px', borderRadius: '50%', margin: '16px auto', display: 'block' }}
+                style={{
+                  width: '120px',
+                  borderRadius: '50%',
+                  margin: '16px auto',
+                  display: 'block'
+                }}
               />
 
               <IonCardHeader>
@@ -55,6 +77,15 @@ const Tab3: React.FC = () => {
             </>
           )}
         </IonCard>
+
+        <IonButton
+          expand="block"
+          color="danger"
+          onClick={handleLogout}
+        >
+          <IonIcon slot="start" icon={logOutOutline} />
+          Cerrar Sesión
+        </IonButton>
       </IonContent>
     </IonPage>
   );
