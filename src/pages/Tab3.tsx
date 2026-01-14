@@ -82,10 +82,13 @@ const Tab3: React.FC = () => {
           expand="block"
           color="danger"
           onClick={handleLogout}
+          style={{ padding: '16px', margin: '24px 16px' }}
         >
           <IonIcon slot="start" icon={logOutOutline} />
           Cerrar Sesión
         </IonButton>
+
+        
       </IonContent>
     </IonPage>
   );

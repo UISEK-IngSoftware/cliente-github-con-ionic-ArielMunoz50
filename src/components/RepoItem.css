@@ -1,0 +1,20 @@
+ion-item {
+  position: relative;
+}
+
+.slide-hint {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg); 
+  z-index: 1000;
+
+  font-size: 22px;
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.slide-hint.open {
+  transform: translateY(-50%) rotate(0deg); 
+}

@@ -88,7 +88,11 @@ const Tab2: React.FC = () => {
 
         </div>
 
-        <IonButton expand="block" className="form_field" onClick={saveRepository}>
+        <IonButton
+          expand="block"
+          onClick={saveRepository}
+          style={{ padding: '16px', margin: '24px 100px' }}
+        >
           Guardar
         </IonButton>
 

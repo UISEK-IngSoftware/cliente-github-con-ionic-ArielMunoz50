@@ -10,6 +10,9 @@ export default defineConfig({
     react(),
     legacy()
   ],
+  optimizeDeps: {
+    include: ['ionicons/icons'],
+  },
   test: {
     globals: true,
     environment: 'jsdom',

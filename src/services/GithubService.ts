@@ -32,13 +32,14 @@ export const fetchRepositories = async (): Promise<RepositoryItem[]> => {
       },
     });
 
-    const repositories: RepositoryItem[] = response.data.map((repo: any) => ({
-      name: repo.name,
-      description: repo.description ? repo.description : null,
-      imageUrl: repo.owner ? repo.owner.avatar_url : null,
-      owner: repo.owner ? repo.owner.login : null,
-      lenguaje: repo.language ? repo.language : null,
-    }));
+  const repositories: RepositoryItem[] = response.data.map((repo: any) => ({
+    name: repo.name,
+    description: repo.description ?? "",
+    imageUrl: repo.owner?.avatar_url ?? null,
+    owner: repo.owner?.login ?? null,
+    language: repo.language ?? null,
+  }));
+
 
     return repositories;
   } catch (error) {
@@ -78,5 +79,34 @@ export const fetchUserInfo = async (): Promise<Userinfo | null> => {
     };
 
     return userInfo;
+  }
+};
+
+export const updateRepository = async (
+  owner: string,
+  repo: string,
+  data: { description: string }
+): Promise<void> => {
+  try {
+    await githubApi.patch(`repos/${owner}/${repo}`, {
+      description: data.description,
+    });
+
+    console.log("Repositorio actualizado correctamente");
+  } catch (error) {
+    console.error("Error al actualizar repositorio", error);
+    throw error;
+  }
+};
+
+export const deleteRepository = async (
+  owner: string,
+  repoName: string
+) => {
+  try {
+    await githubApi.delete(`/repos/${owner}/${repoName}`);
+  } catch (error) {
+    console.error("Error al eliminar el repositorio:", error);
+    throw error;
   }
 };
